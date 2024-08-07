@@ -3,14 +3,13 @@ const router = express.Router();
 import puppeteer from 'puppeteer';
 
 router.post("/getData", async (req, res) => {
-    // const { url } = req;
-    // if (url != "") {
+    const { urli } = req.body;
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
-
+    console.log(urli);
     // Navigate the page to a URL
-    const url = 'https://skindulge.in/sitemap_products_1.xml?from=8003642196244&to=9430137209108';
-    await page.goto('https://skindulge.in/sitemap_products_1.xml?from=8003642196244&to=9430137209108');
+    // const url = 'https://skindulge.in/sitemap_products_1.xml?from=8003642196244&to=9430137209108';
+    await page.goto(urli);
 
     const productLinks = await page.evaluate(() => {
         const links = [];
@@ -49,9 +48,14 @@ router.post("/getData", async (req, res) => {
     }
 
     console.log('Extracted Product Data:', productData);
-    res.json({
-        success: true, message: productData
-    })
+    if (!productData) {
+        res.status(200).json({ success: false })
+    }
+    else {
+        res.json({
+            success: true, message: productData
+        })
+    }
     await browser.close();
 
 });

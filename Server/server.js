@@ -21,6 +21,6 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(scrape);
-app.listen(5000, () => {
+app.listen(3000, () => {
     console.log(`Server Working on PORT Number 5000`);
 });
